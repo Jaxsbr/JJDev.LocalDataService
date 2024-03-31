@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JJDev.LocalDataService", "J
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JJDev.UnitTests", "JJDev.UnitTests\JJDev.UnitTests.csproj", "{0E8B3F58-FCB9-4FA4-AFA1-AB28DE905FC5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF.TestApplication", "WPF.TestApplication\WPF.TestApplication.csproj", "{0E2284A7-4F96-4AC9-8B72-74B792F33BB8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{0E8B3F58-FCB9-4FA4-AFA1-AB28DE905FC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E8B3F58-FCB9-4FA4-AFA1-AB28DE905FC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E8B3F58-FCB9-4FA4-AFA1-AB28DE905FC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E2284A7-4F96-4AC9-8B72-74B792F33BB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E2284A7-4F96-4AC9-8B72-74B792F33BB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E2284A7-4F96-4AC9-8B72-74B792F33BB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E2284A7-4F96-4AC9-8B72-74B792F33BB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
