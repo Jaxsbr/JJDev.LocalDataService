@@ -1,4 +1,6 @@
 ﻿using JJDev.LocalDataService;
+using JJDev.LocalDataService.Utils;
+using Moq;
 
 namespace JJDev.UnitTests
 {
@@ -9,9 +11,14 @@ namespace JJDev.UnitTests
         {
             // arrange
             var path = Environment.CurrentDirectory;
+            var directoryExistsValidatorMock = new Mock<IDirectoryExistsValidator>();
+            directoryExistsValidatorMock
+                .Setup(x => x.Validate(It.Is<string>(y => y == path)))
+                .Returns(true)
+                .Verifiable();
 
             // act
-            var entityManifestWriter = new EntityManifestWriter(path);
+            var entityManifestWriter = new EntityManifestWriter(directoryExistsValidatorMock.Object, path);
 
             // assert
             Assert.Equal(path, entityManifestWriter.Path);
@@ -23,7 +30,8 @@ namespace JJDev.UnitTests
         public void GivenEmptyOrWhitespace_WhenConstructing_ThenThrowException(string path)
         {
             // arrange & act
-            var exception = Assert.Throws<InvalidOperationException>(() => new EntityManifestWriter(path));
+            var exception = Assert.Throws<InvalidOperationException>(() 
+                => new EntityManifestWriter(Mock.Of<IDirectoryExistsValidator>(), path));
 
             // assert
             Assert.NotNull(exception);
@@ -34,14 +42,20 @@ namespace JJDev.UnitTests
         public void GivenInvalidPath_WhenConstructing_ThenThrowException()
         {
             // arrange
-            var invalidPath = "./xxx";
+            var invalidPath = "xxx";
+            var directoryExistsValidatorMock = new Mock<IDirectoryExistsValidator>();
+            directoryExistsValidatorMock
+                .Setup(x => x.Validate(It.Is<string>(y => y == invalidPath)))
+                .Returns(false)
+                .Verifiable();
 
             // act
-            var exception = Assert.Throws<DirectoryNotFoundException>(() =>
-                new EntityManifestWriter(invalidPath));
+            var exception = Assert.Throws<DirectoryNotFoundException>(() 
+                => new EntityManifestWriter(directoryExistsValidatorMock.Object, invalidPath));
 
             // assert
             Assert.NotNull(exception);
+            directoryExistsValidatorMock.Verify();
         }
     }
 }
