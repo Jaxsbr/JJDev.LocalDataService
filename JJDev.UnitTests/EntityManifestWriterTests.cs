@@ -21,7 +21,7 @@ namespace JJDev.UnitTests
             var entityManifestWriter = new EntityManifestWriter(directoryExistsValidatorMock.Object, path);
 
             // assert
-            Assert.Equal(path, entityManifestWriter.Path);
+            Assert.Equal(path, entityManifestWriter.WritePath);
         }
 
         [Theory]
@@ -56,6 +56,28 @@ namespace JJDev.UnitTests
             // assert
             Assert.NotNull(exception);
             directoryExistsValidatorMock.Verify();
+        }
+
+        [Fact]
+        public void GivenManifest_WhenCallingWrite_ThenWritesToFile()
+        {
+            // arrange
+            var path = Environment.CurrentDirectory;
+            var directoryExistsValidatorMock = new Mock<IDirectoryExistsValidator>();
+            directoryExistsValidatorMock
+                .Setup(x => x.Validate(It.Is<string>(y => y == path)))
+                .Returns(true)
+                .Verifiable();
+
+            var entityManifestWriter = new EntityManifestWriter(directoryExistsValidatorMock.Object, path);
+            var entityManifest = new EntityManifest("ownerId");
+
+
+            // act
+            entityManifestWriter.Write(entityManifest);
+
+            // assert
+            Assert.Fail(); // Temp: Failed until file IO operations can be mocked
         }
     }
 }

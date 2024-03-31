@@ -1,4 +1,5 @@
 ﻿using JJDev.LocalDataService.Utils;
+using System.Text.Json;
 
 namespace JJDev.LocalDataService
 {
@@ -9,23 +10,39 @@ namespace JJDev.LocalDataService
     {
         private readonly IDirectoryExistsValidator _directoryExistsValidator;
 
-        public string Path { get; private set; }
+        public string WritePath { get; private set; }
 
-        public EntityManifestWriter(IDirectoryExistsValidator directoryExistsValidator, string path)
+        public EntityManifestWriter(IDirectoryExistsValidator directoryExistsValidator, string writePath)
         {
-            _directoryExistsValidator = directoryExistsValidator;
-
-            if (string.IsNullOrWhiteSpace(path))
+            if (string.IsNullOrWhiteSpace(writePath))
             {
                 throw new InvalidOperationException("'path' cannot be empty or only whitespace");
             }
 
-            if (!_directoryExistsValidator.Validate(path))
+            _directoryExistsValidator = directoryExistsValidator;
+
+            if (!_directoryExistsValidator.Validate(writePath))
             {
                 throw new DirectoryNotFoundException();
             }
 
-            Path = path;
+            WritePath = writePath;
+        }
+
+        public void Write(EntityManifest entityManifest)
+        {
+            // Serialize to JSON
+            var entityManifestJsonContent = "";
+            JsonSerializer.Serialize(
+                entityManifest,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            // Build file name from manifest owner Id and write path
+            var fileName = $"{entityManifest.OwnerId}.json";
+            var filePath = Path.Combine(WritePath, fileName);
+
+            // Writer JSON content to file path
+            File.WriteAllText(filePath, entityManifestJsonContent);
         }
     }
 }
