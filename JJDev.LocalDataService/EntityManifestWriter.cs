@@ -9,10 +9,14 @@ namespace JJDev.LocalDataService
     public class EntityManifestWriter
     {
         private readonly IDirectoryExistsValidator _directoryExistsValidator;
+        private readonly IFileWriter _fileWriter;
 
         public string WritePath { get; private set; }
 
-        public EntityManifestWriter(IDirectoryExistsValidator directoryExistsValidator, string writePath)
+        public EntityManifestWriter(
+            IDirectoryExistsValidator directoryExistsValidator,
+            IFileWriter fileWriter,
+            string writePath)
         {
             if (string.IsNullOrWhiteSpace(writePath))
             {
@@ -26,23 +30,29 @@ namespace JJDev.LocalDataService
                 throw new DirectoryNotFoundException();
             }
 
+            _fileWriter = fileWriter;
             WritePath = writePath;
         }
 
         public void Write(EntityManifest entityManifest)
         {
-            // Serialize to JSON
-            var entityManifestJsonContent = "";
-            JsonSerializer.Serialize(
+            _fileWriter.Write(
+                GetFilePath(entityManifest),
+                GetEntityManifestJson(entityManifest));
+        }
+
+        private string GetEntityManifestJson(EntityManifest entityManifest)
+        {
+            return JsonSerializer.Serialize(
                 entityManifest,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
 
-            // Build file name from manifest owner Id and write path
-            var fileName = $"{entityManifest.OwnerId}.json";
-            var filePath = Path.Combine(WritePath, fileName);
-
-            // Writer JSON content to file path
-            File.WriteAllText(filePath, entityManifestJsonContent);
+        private string GetFilePath(EntityManifest entityManifest)
+        {
+            return Path.Combine(
+                WritePath,
+                $"{entityManifest.OwnerId}.json");
         }
     }
 }

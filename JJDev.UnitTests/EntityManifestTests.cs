@@ -23,8 +23,8 @@ namespace JJDev.UnitTests
         public void GivenEmptyOrWhitesapce_WhenConstructing_ThenThrowException(string ownerId)
         {
             // arrange & act
-            var exception = Assert.Throws<InvalidOperationException>(() =>
-                new EntityManifest(ownerId));
+            var exception = Assert.Throws<InvalidOperationException>(()
+                => new EntityManifest(ownerId));
 
             // assert
             Assert.NotNull(exception);

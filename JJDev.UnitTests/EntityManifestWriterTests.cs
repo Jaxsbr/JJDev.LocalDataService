@@ -18,7 +18,10 @@ namespace JJDev.UnitTests
                 .Verifiable();
 
             // act
-            var entityManifestWriter = new EntityManifestWriter(directoryExistsValidatorMock.Object, path);
+            var entityManifestWriter = new EntityManifestWriter(
+                directoryExistsValidatorMock.Object,
+                Mock.Of<IFileWriter>(),
+                path);
 
             // assert
             Assert.Equal(path, entityManifestWriter.WritePath);
@@ -30,8 +33,11 @@ namespace JJDev.UnitTests
         public void GivenEmptyOrWhitespace_WhenConstructing_ThenThrowException(string path)
         {
             // arrange & act
-            var exception = Assert.Throws<InvalidOperationException>(() 
-                => new EntityManifestWriter(Mock.Of<IDirectoryExistsValidator>(), path));
+            var exception = Assert.Throws<InvalidOperationException>(()
+                => new EntityManifestWriter(
+                    Mock.Of<IDirectoryExistsValidator>(),
+                    Mock.Of<IFileWriter>(),
+                    path));
 
             // assert
             Assert.NotNull(exception);
@@ -50,8 +56,11 @@ namespace JJDev.UnitTests
                 .Verifiable();
 
             // act
-            var exception = Assert.Throws<DirectoryNotFoundException>(() 
-                => new EntityManifestWriter(directoryExistsValidatorMock.Object, invalidPath));
+            var exception = Assert.Throws<DirectoryNotFoundException>(()
+                => new EntityManifestWriter(
+                    directoryExistsValidatorMock.Object,
+                    Mock.Of<IFileWriter>(),
+                    invalidPath));
 
             // assert
             Assert.NotNull(exception);
@@ -69,15 +78,23 @@ namespace JJDev.UnitTests
                 .Returns(true)
                 .Verifiable();
 
-            var entityManifestWriter = new EntityManifestWriter(directoryExistsValidatorMock.Object, path);
-            var entityManifest = new EntityManifest("ownerId");
+            var fileWriterMock = new Mock<IFileWriter>();
+            fileWriterMock
+                .Setup(x => x.Write(It.IsAny<string>(), It.IsAny<string>()))
+                .Verifiable();
 
+            var entityManifestWriter = new EntityManifestWriter(
+                directoryExistsValidatorMock.Object,
+                fileWriterMock.Object,
+                path);
+
+            var entityManifest = new EntityManifest("ownerId");
 
             // act
             entityManifestWriter.Write(entityManifest);
 
             // assert
-            Assert.Fail(); // Temp: Failed until file IO operations can be mocked
+            fileWriterMock.Verify();
         }
     }
 }
