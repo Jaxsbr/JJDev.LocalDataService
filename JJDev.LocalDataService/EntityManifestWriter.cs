@@ -1,4 +1,5 @@
-﻿using JJDev.LocalDataService.Utils;
+﻿using JJDev.LocalDataService.FileIOInterfaces;
+using JJDev.LocalDataService.JsonUtils;
 using System.Text.Json;
 
 namespace JJDev.LocalDataService
@@ -49,9 +50,7 @@ namespace JJDev.LocalDataService
 
         private string GetEntityManifestJson(EntityManifest entityManifest)
         {
-            return JsonSerializer.Serialize(
-                entityManifest,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return Serializer.Serialize(entityManifest);
         }
 
         private string GetFilePath(EntityManifest entityManifest)

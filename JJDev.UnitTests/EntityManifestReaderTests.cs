@@ -1,5 +1,5 @@
 ﻿using JJDev.LocalDataService;
-using JJDev.LocalDataService.Utils;
+using JJDev.LocalDataService.FileIOInterfaces;
 using Moq;
 
 namespace JJDev.UnitTests
