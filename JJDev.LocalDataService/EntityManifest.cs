@@ -1,4 +1,6 @@
-﻿namespace JJDev.LocalDataService
+﻿using JJDev.LocalDataService.ExtensionMethods;
+
+namespace JJDev.LocalDataService
 {
     /// <summary>
     /// EntityManifest represents a physical file on the local computer.
@@ -15,10 +17,7 @@
 
         public EntityManifest(string ownerId)
         {
-            if (string.IsNullOrWhiteSpace(ownerId))
-            {
-                throw new InvalidOperationException("'ownerId' cannot be empty or only whitespace");
-            }
+            ownerId.ValidateForEmptiness(nameof(ownerId));
 
             OwnerId = ownerId;
             _records = new List<EntityManifestRecord>();
@@ -31,10 +30,7 @@
         /// <returns>Returns a Guid record id for the newly created entity record</returns>
         public Guid AddRecord(string entityType)
         {
-            if (string.IsNullOrWhiteSpace(entityType))
-            {
-                throw new InvalidOperationException("'entityType' cannot be empty or only whitespace");
-            }
+            entityType.ValidateForEmptiness(nameof(entityType));
 
             var recordId = Guid.NewGuid();
 

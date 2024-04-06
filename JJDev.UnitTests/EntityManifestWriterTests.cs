@@ -33,7 +33,7 @@ namespace JJDev.UnitTests
         public void GivenEmptyOrWhitespace_WhenConstructing_ThenThrowException(string path)
         {
             // arrange & act
-            var exception = Assert.Throws<InvalidOperationException>(()
+            var exception = Assert.Throws<ArgumentException>(()
                 => new EntityManifestWriter(
                     Mock.Of<IDirectoryExistsValidator>(),
                     Mock.Of<IFileWriter>(),
@@ -41,7 +41,7 @@ namespace JJDev.UnitTests
 
             // assert
             Assert.NotNull(exception);
-            Assert.Equal("'path' cannot be empty or only whitespace", exception.Message);
+            Assert.Equal("'writePath' cannot be empty or only whitespace", exception.Message);
         }
 
         [Fact]

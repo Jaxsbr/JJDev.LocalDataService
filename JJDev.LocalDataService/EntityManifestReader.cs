@@ -1,4 +1,5 @@
-﻿using JJDev.LocalDataService.FileIOInterfaces;
+﻿using JJDev.LocalDataService.ExtensionMethods;
+using JJDev.LocalDataService.FileIOInterfaces;
 using System.Text.Json;
 
 namespace JJDev.LocalDataService
@@ -19,17 +20,14 @@ namespace JJDev.LocalDataService
         /// The class that performs directory existance validation</param>
         /// <param name="fileReader">An implementation of the IFileReader interface. The class that performs the JSON retrieval</param>
         /// <param name="readPath">A directory where an EntityManifestReader will attempt to read from</param>
-        /// <exception cref="InvalidOperationException">Exception is thrown when the readPath argument is empty or only whitespace</exception>
+        /// <exception cref="ArgumentException">Exception is thrown when the readPath argument is empty or only whitespace</exception>
         /// <exception cref="DirectoryNotFoundException">Exception is thrown when readPath is not a valid directory</exception>
         public EntityManifestReader(
             IDirectoryExistsValidator directoryExistsValidator,
             IFileReader fileReader,
             string readPath)
         {
-            if (string.IsNullOrWhiteSpace(readPath))
-            {
-                throw new InvalidOperationException("'readPath' cannot be empty or only whitespace");
-            }
+            readPath.ValidateForEmptiness(nameof(readPath));
 
             if(!directoryExistsValidator.Validate(readPath))
             {
@@ -44,7 +42,7 @@ namespace JJDev.LocalDataService
         {
             if (string.IsNullOrWhiteSpace (ownerId))
             {
-                throw new InvalidOperationException("'ownerId' cannot be empty or only whitespace");
+                throw new ArgumentException("'ownerId' cannot be empty or only whitespace");
             }
 
             var entityManifestJson = _fileReader.Read(GetFilePath(ownerId));

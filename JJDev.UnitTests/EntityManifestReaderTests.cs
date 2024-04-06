@@ -34,7 +34,7 @@ namespace JJDev.UnitTests
         public void GivenEmptyOrWhitespace_WhenConstructing_ThenThrowException(string readPath)
         {
             // act
-            var exception = Assert.Throws<InvalidOperationException>(()
+            var exception = Assert.Throws<ArgumentException>(()
                 => new EntityManifestReader(
                     Mock.Of<IDirectoryExistsValidator>(),
                     Mock.Of<IFileReader>(),
@@ -88,7 +88,7 @@ namespace JJDev.UnitTests
                 readPath);
 
             // act
-            var exception = Assert.Throws<InvalidOperationException>(()
+            var exception = Assert.Throws<ArgumentException>(()
                 => entityManifestReader.Read(ownerId));
 
             // assert
@@ -170,10 +170,5 @@ namespace JJDev.UnitTests
             fileReaderMock.Verify();
             directoryExistsValidatorMock.Verify();
         }
-
-        // TODO:
-        // - Refactor serialization logic
-        // - Refactor reused constructor mock logic in tests
-        // - Research attribute for empty/whitespace string validation
     }
 }
