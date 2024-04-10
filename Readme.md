@@ -16,7 +16,7 @@ This challenge poses issues of performance and efficiency. Unlike in data manage
 
 ## Solution 1
 
-The data we are managing with this library needs to transition between two states. Because of this it's is difficult to describe scenarios without having a unified term and henceforth will be known as `entities`. The two state are:
+The data we are managing with this library needs to transition between two states:
 
 1. `Object state`, the code object/class the resides in memory
 2. `File state`, the JSON representation of an object/class stored on a local computer file.
