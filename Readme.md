@@ -24,8 +24,8 @@ The data we are managing with this library needs to transition between two state
 Solution one addresses the logic flow from `File state` to `Object state`, specifically which files need to transition.
 
 For example:
-In a veterinary application that manages clients pets, such as dogs, cats and reptiles. Each of these entities will be represented by different C# classes and will have different properties. The list of pets might be very large and consequently we'll have many local files.
-When the application needs to load all dog entities, how would it know which of the files are dogs and which are cats or reptiles.
+In a veterinary application that manages clients pets, such as dogs, cats and reptiles. Each of these entities will be represented by different C# classes and will have different properties. The list of pets might be very large and consequently we'll have many local files, one per pet.
+When the application needs to load all dog files, how would it know which of the files are dogs and which are cats or reptiles.
 
 Previously I've solved this solution in two different ways.
 
