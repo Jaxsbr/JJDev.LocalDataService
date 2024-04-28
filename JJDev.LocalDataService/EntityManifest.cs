@@ -1,4 +1,5 @@
 ﻿using JJDev.LocalDataService.ExtensionMethods;
+using System.Collections.ObjectModel;
 
 namespace JJDev.LocalDataService
 {
@@ -15,12 +16,17 @@ namespace JJDev.LocalDataService
 
         private List<EntityManifestRecord> _records;
 
+        public ReadOnlyCollection<EntityManifestRecord> Records { get; private set; }
+
         public EntityManifest(string ownerId)
         {
             ownerId.ValidateForEmptiness(nameof(ownerId));
 
             OwnerId = ownerId;
+
             _records = new List<EntityManifestRecord>();
+
+            Records = new ReadOnlyCollection<EntityManifestRecord>(_records);
         }
 
         /// <summary>
@@ -35,11 +41,10 @@ namespace JJDev.LocalDataService
             var recordId = Guid.NewGuid();
 
             _records.Add(
-                new EntityManifestRecord
-                {
-                    Id = recordId.ToString(),
-                    EntityType = entityType
-                });
+                new EntityManifestRecord(
+                    recordId.ToString(),
+                    entityType
+                ));
 
             return recordId;
         }

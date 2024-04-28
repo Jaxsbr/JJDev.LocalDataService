@@ -1,12 +1,12 @@
 ﻿namespace JJDev.LocalDataService
 {
-    internal struct EntityManifestRecord
+    public struct EntityManifestRecord
     {
-        internal string Id { get; set; }
+        public string Id { get; private set; }
 
-        internal string EntityType { get; set; }
+        public string EntityType { get; private set; }
 
-        internal EntityManifestRecord(string id, string entityType)
+        public EntityManifestRecord(string id, string entityType)
         {
             Id = id;
             EntityType = entityType;

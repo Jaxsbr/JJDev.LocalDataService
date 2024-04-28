@@ -1,6 +1,5 @@
 TODO
 =======================
 
-Refactor reused constructor mock logic in tests
-
-Test for case insensitivity (DeserializerTests.cs)
+- Add functionality for deserializing json into entity manifest records
+- Add functionality to remove Enity Manifest Records and associated files

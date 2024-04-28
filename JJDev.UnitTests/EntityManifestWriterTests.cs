@@ -71,6 +71,8 @@ namespace JJDev.UnitTests
         public void GivenManifest_WhenCallingWrite_ThenWritesToFile()
         {
             // arrange
+            var ownerId = "theboss";
+            var recordType = "dogType";
             var path = Environment.CurrentDirectory;
             var directoryExistsValidatorMock = new Mock<IDirectoryExistsValidator>();
             directoryExistsValidatorMock
@@ -80,7 +82,11 @@ namespace JJDev.UnitTests
 
             var fileWriterMock = new Mock<IFileWriter>();
             fileWriterMock
-                .Setup(x => x.Write(It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(x => x.Write(
+                    It.IsAny<string>(), 
+                    It.Is<string>(y => 
+                        y.Contains("\"OwnerId\":\"" + ownerId + "\"") &&
+                        y.Contains("\"EntityType\":\"" + recordType + "\""))))
                 .Verifiable();
 
             var entityManifestWriter = new EntityManifestWriter(
@@ -88,7 +94,9 @@ namespace JJDev.UnitTests
                 fileWriterMock.Object,
                 path);
 
-            var entityManifest = new EntityManifest("ownerId");
+            var entityManifest = new EntityManifest(ownerId);
+
+            entityManifest.AddRecord(recordType);
 
             // act
             entityManifestWriter.Write(entityManifest);

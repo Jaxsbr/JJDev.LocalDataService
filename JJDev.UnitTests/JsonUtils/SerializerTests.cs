@@ -1,4 +1,5 @@
 ﻿using JJDev.LocalDataService.JsonUtils;
+using System.Text.Json;
 
 namespace JJDev.UnitTests.JsonUtils
 {
@@ -24,6 +25,32 @@ namespace JJDev.UnitTests.JsonUtils
             // arrange
             var expected = "{\"Name\":\"John Doe\",\"Age\":30}";
             var person = new { Name = "John Doe", Age = 30 };
+
+            // act
+            var result = Serializer.Serialize(person);
+
+            // assert
+            Assert.NotNull(result);
+            Assert.Equal(expected, result);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void GivenVariedCaseNameObject_WhenCallingSerialize_ThenReturnJson(bool propertyNameCaseInsensitive)
+        {
+            // arrange
+            dynamic person;
+            if (propertyNameCaseInsensitive)
+            {
+                person = new { nAmE = "John Doe", AgE = 30 };
+            }
+            else
+            {
+                person = new { Name = "John Doe", Age = 30 };
+            }
+
+            var expected = JsonSerializer.Serialize(person, new JsonSerializerOptions { PropertyNameCaseInsensitive = propertyNameCaseInsensitive });
 
             // act
             var result = Serializer.Serialize(person);

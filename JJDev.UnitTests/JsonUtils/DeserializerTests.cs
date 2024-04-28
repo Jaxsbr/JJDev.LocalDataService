@@ -1,5 +1,6 @@
 ﻿using JJDev.LocalDataService.JsonUtils;
 using System.Text.Json;
+using System.Reflection;
 
 namespace JJDev.UnitTests.JsonUtils
 {
@@ -25,17 +26,16 @@ namespace JJDev.UnitTests.JsonUtils
         public void GivenJson_WhenCallingDeserialize_ThenReturnGenericObject(bool propertyNameCaseInsensitive)
         {
             // arrange
-            var person = new { Name = "John Doe", Age = 30 };
-            var personJson = JsonSerializer.Serialize(person);
+            var json = "{\"name\":\"joe\"}";
 
             // act
             var deserializedObject = Deserializer.Deserialize<object>(
-                personJson, 
+                json, 
                 propertyNameCaseInsensitive);
 
             // assert
-             Assert.NotNull(deserializedObject);
-            Assert.Equal(personJson, deserializedObject.ToString());
+            Assert.NotNull(deserializedObject);
+            Assert.Equal(json, deserializedObject.ToString());
         }
     }
 }
